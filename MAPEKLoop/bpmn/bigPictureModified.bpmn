@@ -1,0 +1,1497 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:camunda="http://camunda.org/schema/1.0/bpmn" xmlns:custom="http://custom/ns" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" exporter="Camunda Modeler" exporterVersion="5.6.0" expressionLanguage="http://www.w3.org/1999/XPath" id="Definitions_05bgsff" targetNamespace="http://bpmn.io/schema/bpmn" typeLanguage="http://www.w3.org/2001/XMLSchema">
+    
+  <bpmn:collaboration id="Collaboration_1hvxavi" isClosed="false">
+        
+    <bpmn:participant id="Participant_1x54jsq" name="CUSTOMERS" processRef="Process_0hipkwi"/>
+        
+    <bpmn:participant id="Participant_1vqa33e" name="PAYMENT" processRef="Process_0l3qg4b"/>
+        
+    <bpmn:participant id="Participant_1aa95by" name="INVENTORY" processRef="Process_1q9f49e"/>
+        
+    <bpmn:participant id="Participant_1vq6aox" name="SHIPMENT" processRef="Process_07h4c74"/>
+        
+    <bpmn:messageFlow id="MessageFlow_1ic6qdg" sourceRef="StartEvent_0ofkwm5" targetRef="StartEvent_0ofkwm5"/>
+        
+    <bpmn:messageFlow id="MessageFlow_0bdi1qu" sourceRef="StartEvent_0ofkwm5" targetRef="StartEvent_117vzcr"/>
+        
+    <bpmn:messageFlow id="MessageFlow_1txuzjd" sourceRef="EndEvent_055p86a" targetRef="StartEvent_1o0gd5i"/>
+        
+    <bpmn:messageFlow id="MessageFlow_1uzx9w5" sourceRef="EndEvent_1khd82k" targetRef="IntermediateThrowEvent_08qzkak"/>
+        
+    <bpmn:messageFlow id="MessageFlow_0vber8c" sourceRef="EndEvent_0uxtgne" targetRef="IntermediateThrowEvent_0egi58r"/>
+        
+    <bpmn:messageFlow id="MessageFlow_1u8c1af" sourceRef="EndEvent_0xcpu6g" targetRef="IntermediateThrowEvent_19t8t3k"/>
+      
+  </bpmn:collaboration>
+    
+  <bpmn:process id="Process_0hipkwi" isClosed="false" isExecutable="false" processType="None">
+        
+    <bpmn:serviceTask completionQuantity="1" custom:method="GET" custom:url="http://localhost:8081/checkcustomer" id="ServiceTask_0626o4t" implementation="##WebService" isForCompensation="false" name="checkCustomer" startQuantity="1">
+            
+      <bpmn:extensionElements>
+                
+        <camunda:field name="url" stringValue="http://localhost:8081/checkcustomer"/>
+                
+        <camunda:field name="method" stringValue="GET"/>
+              
+      </bpmn:extensionElements>
+            
+      <bpmn:incoming>SequenceFlow_0sn8zf6</bpmn:incoming>
+            
+      <bpmn:outgoing>SequenceFlow_13grrvt</bpmn:outgoing>
+          
+    </bpmn:serviceTask>
+        
+    <bpmn:endEvent id="EndEvent_0lnu2h6">
+            
+      <bpmn:incoming>SequenceFlow_09avmiw</bpmn:incoming>
+          
+    </bpmn:endEvent>
+        
+    <bpmn:serviceTask completionQuantity="1" custom:method="GET" custom:url="http://localhost:8081/cancelorder" id="Task_0vo5g53" implementation="##WebService" isForCompensation="false" name="cancelOrder" startQuantity="1">
+            
+      <bpmn:extensionElements>
+                
+        <camunda:field name="url" stringValue="http://localhost:8081/cancelorder"/>
+                
+        <camunda:field name="method" stringValue="GET"/>
+              
+      </bpmn:extensionElements>
+            
+      <bpmn:incoming>SequenceFlow_15jk787</bpmn:incoming>
+            
+      <bpmn:outgoing>SequenceFlow_0qparhr</bpmn:outgoing>
+          
+    </bpmn:serviceTask>
+        
+    <bpmn:serviceTask completionQuantity="1" custom:method="GET" custom:url="http://localhost:8081/updatecustomerrecord" id="Task_0zc6mlc" implementation="##WebService" isForCompensation="false" name="updateCustomerRecord" startQuantity="1">
+            
+      <bpmn:extensionElements>
+                
+        <camunda:field name="url" stringValue="http://localhost:8081/updatecustomerrecord"/>
+                
+        <camunda:field name="method" stringValue="GET"/>
+              
+      </bpmn:extensionElements>
+            
+      <bpmn:incoming>SequenceFlow_19gw26p</bpmn:incoming>
+            
+      <bpmn:outgoing>SequenceFlow_1h3fghq</bpmn:outgoing>
+          
+    </bpmn:serviceTask>
+        
+    <bpmn:intermediateCatchEvent id="IntermediateThrowEvent_08qzkak" name="Shipment Managed" parallelMultiple="false">
+            
+      <bpmn:incoming>SequenceFlow_1a0x9h4</bpmn:incoming>
+            
+      <bpmn:outgoing>SequenceFlow_19gw26p</bpmn:outgoing>
+            
+      <bpmn:messageEventDefinition/>
+          
+    </bpmn:intermediateCatchEvent>
+        
+    <bpmn:endEvent id="EndEvent_1ofpjgn" name="Order    Processed">
+            
+      <bpmn:incoming>SequenceFlow_0503zl7</bpmn:incoming>
+            
+      <bpmn:messageEventDefinition/>
+          
+    </bpmn:endEvent>
+        
+    <bpmn:serviceTask completionQuantity="1" custom:method="GET" custom:url="http://localhost:8081/logrequest" id="Task_0dwg5by" implementation="##WebService" isForCompensation="false" name="logRequest" startQuantity="1">
+            
+      <bpmn:extensionElements>
+                
+        <camunda:field name="url" stringValue="http://localhost:8081/logrequest"/>
+                
+        <camunda:field name="method" stringValue="GET"/>
+              
+      </bpmn:extensionElements>
+            
+      <bpmn:incoming>SequenceFlow_13grrvt</bpmn:incoming>
+            
+      <bpmn:outgoing>SequenceFlow_1pl0nj7</bpmn:outgoing>
+          
+    </bpmn:serviceTask>
+        
+    <bpmn:startEvent id="StartEvent_1nu2tlq" isInterrupting="true" name="Process Purchase Order" parallelMultiple="false">
+            
+      <bpmn:outgoing>SequenceFlow_0sn8zf6</bpmn:outgoing>
+            
+      <bpmn:dataOutputAssociation id="DataOutputAssociation_0dpxiaw">
+                
+        <bpmn:targetRef>DataObjectReference_02l7u2z</bpmn:targetRef>
+              
+      </bpmn:dataOutputAssociation>
+            
+      <bpmn:messageEventDefinition/>
+          
+    </bpmn:startEvent>
+        
+    <bpmn:boundaryEvent attachedToRef="ServiceTask_0626o4t" cancelActivity="true" id="IntermediateThrowEvent_17y6grb" parallelMultiple="false">
+            
+      <bpmn:outgoing>SequenceFlow_15jk787</bpmn:outgoing>
+            
+      <bpmn:errorEventDefinition/>
+          
+    </bpmn:boundaryEvent>
+        
+    <bpmn:sequenceFlow id="SequenceFlow_0sn8zf6" sourceRef="StartEvent_1nu2tlq" targetRef="ServiceTask_0626o4t"/>
+        
+    <bpmn:sequenceFlow id="SequenceFlow_13grrvt" sourceRef="ServiceTask_0626o4t" targetRef="Task_0dwg5by"/>
+        
+    <bpmn:sequenceFlow id="SequenceFlow_0qparhr" sourceRef="Task_0vo5g53" targetRef="Task_1p8h9rz"/>
+        
+    <bpmn:sequenceFlow id="SequenceFlow_09avmiw" sourceRef="Task_1p8h9rz" targetRef="EndEvent_0lnu2h6"/>
+        
+    <bpmn:sequenceFlow id="SequenceFlow_15jk787" sourceRef="IntermediateThrowEvent_17y6grb" targetRef="Task_0vo5g53"/>
+        
+    <bpmn:sequenceFlow id="SequenceFlow_19gw26p" sourceRef="IntermediateThrowEvent_08qzkak" targetRef="Task_0zc6mlc"/>
+        
+    <bpmn:sequenceFlow id="SequenceFlow_1h3fghq" sourceRef="Task_0zc6mlc" targetRef="Task_10i9990"/>
+        
+    <bpmn:sequenceFlow id="SequenceFlow_0503zl7" sourceRef="Task_10i9990" targetRef="EndEvent_1ofpjgn"/>
+        
+    <bpmn:serviceTask completionQuantity="1" custom:method="GET" custom:url="http://158.42.140.112:8081/informcustomer" id="Task_1p8h9rz" implementation="##WebService" isForCompensation="false" name="informCustomer" startQuantity="1">
+            
+      <bpmn:extensionElements>
+                
+        <camunda:field name="url" stringValue="http://localhost:8081/informcustomer"/>
+                
+        <camunda:field name="method" stringValue="GET"/>
+              
+      </bpmn:extensionElements>
+            
+      <bpmn:incoming>SequenceFlow_0qparhr</bpmn:incoming>
+            
+      <bpmn:outgoing>SequenceFlow_09avmiw</bpmn:outgoing>
+          
+    </bpmn:serviceTask>
+        
+    <bpmn:serviceTask completionQuantity="1" custom:method="GET" custom:url="http://localhost:8081/informcustomer" id="Task_10i9990" implementation="##WebService" isForCompensation="false" name="informCustomer" startQuantity="1">
+            
+      <bpmn:extensionElements>
+                
+        <camunda:field name="url" stringValue="http://localhost:8081/informcustomer"/>
+                
+        <camunda:field name="method" stringValue="GET"/>
+              
+      </bpmn:extensionElements>
+            
+      <bpmn:incoming>SequenceFlow_1h3fghq</bpmn:incoming>
+            
+      <bpmn:outgoing>SequenceFlow_0503zl7</bpmn:outgoing>
+          
+    </bpmn:serviceTask>
+        
+    <bpmn:intermediateThrowEvent id="IntermediateThrowEvent_06f6r4x" name="VIP Customer">
+            
+      <bpmn:incoming>SequenceFlow_1pl0nj7</bpmn:incoming>
+            
+      <bpmn:outgoing>SequenceFlow_1a0x9h4</bpmn:outgoing>
+            
+      <bpmn:property id="Property_1hubn87" name="__targetRef_placeholder"/>
+            
+      <bpmn:dataInputAssociation id="DataInputAssociation_0pekmcs">
+                
+        <bpmn:sourceRef>DataObjectReference_0w8gki0</bpmn:sourceRef>
+                
+        <bpmn:targetRef>Property_1hubn87</bpmn:targetRef>
+              
+      </bpmn:dataInputAssociation>
+            
+      <bpmn:messageEventDefinition/>
+          
+    </bpmn:intermediateThrowEvent>
+        
+    <bpmn:sequenceFlow id="SequenceFlow_1pl0nj7" sourceRef="Task_0dwg5by" targetRef="IntermediateThrowEvent_06f6r4x"/>
+        
+    <bpmn:sequenceFlow id="SequenceFlow_1a0x9h4" sourceRef="IntermediateThrowEvent_06f6r4x" targetRef="IntermediateThrowEvent_08qzkak"/>
+        
+    <bpmn:dataObjectReference dataObjectRef="DataObject_0yayma0" id="DataObjectReference_02l7u2z">
+            
+      <bpmn:extensionElements>
+                
+        <camunda:properties>
+                    
+          <camunda:property name="Customers Name" value="String"/>
+                    
+          <camunda:property name="Payment Method" value="Integer"/>
+                    
+          <camunda:property name="Product Name" value="String"/>
+                  
+        </camunda:properties>
+              
+      </bpmn:extensionElements>
+          
+    </bpmn:dataObjectReference>
+        
+    <bpmn:dataObject id="DataObject_0yayma0" isCollection="false"/>
+        
+    <bpmn:dataObjectReference dataObjectRef="DataObject_14dczih" id="DataObjectReference_0w8gki0">
+            
+      <bpmn:extensionElements>
+                
+        <camunda:properties>
+                    
+          <camunda:property name="Product Name" value="String"/>
+                    
+          <camunda:property name="Payment Method" value="Integer"/>
+                  
+        </camunda:properties>
+              
+      </bpmn:extensionElements>
+          
+    </bpmn:dataObjectReference>
+        
+    <bpmn:dataObject id="DataObject_14dczih" isCollection="false"/>
+      
+  </bpmn:process>
+    
+  <bpmn:process id="Process_0l3qg4b" isClosed="false" isExecutable="false" processType="None">
+        
+    <bpmn:serviceTask completionQuantity="1" custom:method="GET" custom:url="http://localhost:8086/changepaymentdetails" id="ServiceTask_04aarjs" implementation="##WebService" isForCompensation="false" name="changePaymentDetails" startQuantity="1">
+            
+      <bpmn:extensionElements>
+                
+        <camunda:field name="url" stringValue="http://localhost:8086/changepaymentdetails"/>
+                
+        <camunda:field name="method" stringValue="GET"/>
+              
+      </bpmn:extensionElements>
+            
+      <bpmn:incoming>SequenceFlow_1d70tjq</bpmn:incoming>
+            
+      <bpmn:outgoing>SequenceFlow_0rgnozq</bpmn:outgoing>
+          
+    </bpmn:serviceTask>
+        
+    <bpmn:serviceTask completionQuantity="1" custom:method="GET" custom:url="http://localhost:8086/paymentprocess" id="ServiceTask_1l3sk3a" implementation="##WebService" isForCompensation="false" name="paymentProcess" startQuantity="1">
+            
+      <bpmn:extensionElements>
+                
+        <camunda:field name="url" stringValue="http://localhost:8086/paymentprocess"/>
+                
+        <camunda:field name="method" stringValue="GET"/>
+              
+      </bpmn:extensionElements>
+            
+      <bpmn:incoming>SequenceFlow_1f6cwiv</bpmn:incoming>
+            
+      <bpmn:outgoing>SequenceFlow_0gzq95p</bpmn:outgoing>
+          
+    </bpmn:serviceTask>
+        
+    <bpmn:startEvent id="StartEvent_0ofkwm5" isInterrupting="true" name="VIP Customer" parallelMultiple="false">
+            
+      <bpmn:outgoing>SequenceFlow_070m5hg</bpmn:outgoing>
+            
+      <bpmn:dataOutputAssociation id="DataOutputAssociation_020m3dq">
+                
+        <bpmn:targetRef>DataObjectReference_0w8gki0</bpmn:targetRef>
+              
+      </bpmn:dataOutputAssociation>
+            
+      <bpmn:messageEventDefinition/>
+          
+    </bpmn:startEvent>
+        
+    <bpmn:endEvent id="EndEvent_0uxtgne" name="Payment OK">
+            
+      <bpmn:incoming>SequenceFlow_0gzq95p</bpmn:incoming>
+            
+      <bpmn:messageEventDefinition/>
+          
+    </bpmn:endEvent>
+        
+    <bpmn:serviceTask completionQuantity="1" custom:method="GET" custom:url="http://localhost:8086/cancelorder" id="Task_07r9m43" implementation="##WebService" isForCompensation="false" name="cancelOrder" startQuantity="1">
+            
+      <bpmn:extensionElements>
+                
+        <camunda:field name="url" stringValue="http://localhost:8086/cancelorder"/>
+                
+        <camunda:field name="method" stringValue="GET"/>
+              
+      </bpmn:extensionElements>
+            
+      <bpmn:incoming>SequenceFlow_1gl67fk</bpmn:incoming>
+            
+      <bpmn:outgoing>SequenceFlow_19fpf7b</bpmn:outgoing>
+          
+    </bpmn:serviceTask>
+        
+    <bpmn:endEvent id="EndEvent_0xcpu6g" name="Payment Failed">
+            
+      <bpmn:incoming>SequenceFlow_0zmoylf</bpmn:incoming>
+            
+      <bpmn:messageEventDefinition/>
+          
+    </bpmn:endEvent>
+        
+    <bpmn:serviceTask completionQuantity="1" custom:method="GET" custom:url="http://localhost:8086/showpaymentoptions" id="Task_0e2o1cj" implementation="##WebService" isForCompensation="false" name="showPaymentOptions" startQuantity="1">
+            
+      <bpmn:extensionElements>
+                
+        <camunda:field name="url" stringValue="http://localhost:8086/showpaymentoptions"/>
+                
+        <camunda:field name="method" stringValue="GET"/>
+              
+      </bpmn:extensionElements>
+            
+      <bpmn:incoming>SequenceFlow_070m5hg</bpmn:incoming>
+            
+      <bpmn:incoming>SequenceFlow_0rgnozq</bpmn:incoming>
+            
+      <bpmn:outgoing>SequenceFlow_1f6cwiv</bpmn:outgoing>
+          
+    </bpmn:serviceTask>
+        
+    <bpmn:serviceTask completionQuantity="1" custom:method="GET" custom:url="http://localhost:8086/informcustomer" id="Task_1v7zv47" implementation="##WebService" isForCompensation="false" name="informCustomer" startQuantity="1">
+            
+      <bpmn:extensionElements>
+                
+        <camunda:field name="url" stringValue="http://localhost:8086/informcustomer"/>
+                
+        <camunda:field name="method" stringValue="GET"/>
+              
+      </bpmn:extensionElements>
+            
+      <bpmn:incoming>SequenceFlow_19fpf7b</bpmn:incoming>
+            
+      <bpmn:outgoing>SequenceFlow_0zmoylf</bpmn:outgoing>
+          
+    </bpmn:serviceTask>
+        
+    <bpmn:boundaryEvent attachedToRef="Task_0e2o1cj" cancelActivity="true" id="BoundaryEvent_04hffgp" parallelMultiple="false">
+            
+      <bpmn:outgoing>SequenceFlow_1d70tjq</bpmn:outgoing>
+            
+      <bpmn:conditionalEventDefinition>
+                
+        <bpmn:condition xsi:type="bpmn:tFormalExpression">${0 == 1}</bpmn:condition>
+              
+      </bpmn:conditionalEventDefinition>
+          
+    </bpmn:boundaryEvent>
+        
+    <bpmn:boundaryEvent attachedToRef="ServiceTask_1l3sk3a" cancelActivity="true" id="IntermediateThrowEvent_1uxrkv6" parallelMultiple="false">
+            
+      <bpmn:outgoing>SequenceFlow_1gl67fk</bpmn:outgoing>
+            
+      <bpmn:errorEventDefinition id="ErrorEventDefinition_02qnauz"/>
+          
+    </bpmn:boundaryEvent>
+        
+    <bpmn:sequenceFlow id="SequenceFlow_0gzq95p" sourceRef="ServiceTask_1l3sk3a" targetRef="EndEvent_0uxtgne"/>
+        
+    <bpmn:sequenceFlow id="SequenceFlow_1gl67fk" sourceRef="IntermediateThrowEvent_1uxrkv6" targetRef="Task_07r9m43"/>
+        
+    <bpmn:sequenceFlow id="SequenceFlow_1f6cwiv" sourceRef="Task_0e2o1cj" targetRef="ServiceTask_1l3sk3a"/>
+        
+    <bpmn:sequenceFlow id="SequenceFlow_1d70tjq" sourceRef="BoundaryEvent_04hffgp" targetRef="ServiceTask_04aarjs"/>
+        
+    <bpmn:sequenceFlow id="SequenceFlow_0rgnozq" sourceRef="ServiceTask_04aarjs" targetRef="Task_0e2o1cj"/>
+        
+    <bpmn:sequenceFlow id="SequenceFlow_070m5hg" sourceRef="StartEvent_0ofkwm5" targetRef="Task_0e2o1cj"/>
+        
+    <bpmn:sequenceFlow id="SequenceFlow_19fpf7b" sourceRef="Task_07r9m43" targetRef="Task_1v7zv47"/>
+        
+    <bpmn:sequenceFlow id="SequenceFlow_0zmoylf" sourceRef="Task_1v7zv47" targetRef="EndEvent_0xcpu6g"/>
+        
+    
+  
+  </bpmn:process>
+    
+  <bpmn:process id="Process_1q9f49e" isClosed="false" isExecutable="false" processType="None">
+        
+    <bpmn:serviceTask completionQuantity="1" custom:method="GET" custom:url="http://localhost:8082/checkavailability" id="ServiceTask_0l7xx9r" implementation="##WebService" isForCompensation="false" name="checkAvailabity" startQuantity="1">
+            
+      <bpmn:extensionElements>
+                
+        <camunda:field name="url" stringValue="http://localhost:8082/checkavailability"/>
+                
+        <camunda:field name="method" stringValue="GET"/>
+              
+      </bpmn:extensionElements>
+            
+      <bpmn:incoming>SequenceFlow_1n1uzq4</bpmn:incoming>
+            
+      <bpmn:outgoing>SequenceFlow_1st8mja</bpmn:outgoing>
+          
+    </bpmn:serviceTask>
+        
+    <bpmn:startEvent id="StartEvent_117vzcr" isInterrupting="true" name="VIP Customer" parallelMultiple="false">
+            
+      <bpmn:outgoing>SequenceFlow_1n1uzq4</bpmn:outgoing>
+            
+      <bpmn:dataOutputAssociation id="DataOutputAssociation_1o34wkp">
+                
+        <bpmn:targetRef>DataObjectReference_0w8gki0</bpmn:targetRef>
+              
+      </bpmn:dataOutputAssociation>
+            
+      <bpmn:messageEventDefinition/>
+          
+    </bpmn:startEvent>
+        
+    <bpmn:sequenceFlow id="SequenceFlow_1n1uzq4" sourceRef="StartEvent_117vzcr" targetRef="ServiceTask_0l7xx9r"/>
+        
+    <bpmn:sequenceFlow id="SequenceFlow_05lptsr" sourceRef="Task_15zmvin" targetRef="Task_0wcbuzx"/>
+        
+    <bpmn:sequenceFlow id="SequenceFlow_0mqhd07" sourceRef="Task_0wcbuzx" targetRef="EndEvent_0ki3b03"/>
+        
+    <bpmn:sequenceFlow id="SequenceFlow_07a7j1z" sourceRef="IntermediateThrowEvent_05lkfcb" targetRef="Task_15zmvin"/>
+        
+    <bpmn:sequenceFlow id="SequenceFlow_1st8mja" sourceRef="ServiceTask_0l7xx9r" targetRef="Task_0sfhu0v"/>
+        
+    <bpmn:serviceTask completionQuantity="1" custom:method="GET" custom:url="http://localhost:8082/bookproducts" id="Task_0sfhu0v" implementation="##WebService" isForCompensation="false" name="bookProducts" startQuantity="1">
+            
+      <bpmn:extensionElements>
+                
+        <camunda:field name="url" stringValue="http://localhost:8082/bookproducts"/>
+                
+        <camunda:field name="method" stringValue="GET"/>
+              
+      </bpmn:extensionElements>
+            
+      <bpmn:incoming>SequenceFlow_1st8mja</bpmn:incoming>
+            
+      <bpmn:outgoing>SequenceFlow_0jpm79n</bpmn:outgoing>
+          
+    </bpmn:serviceTask>
+        
+    <bpmn:endEvent id="EndEvent_0wz9knv">
+            
+      <bpmn:incoming>SequenceFlow_0uvl97t</bpmn:incoming>
+          
+    </bpmn:endEvent>
+        
+    <bpmn:endEvent id="EndEvent_055p86a" name="Stock Updated">
+            
+      <bpmn:incoming>SequenceFlow_152419b</bpmn:incoming>
+            
+      <bpmn:messageEventDefinition/>
+          
+    </bpmn:endEvent>
+        
+    <bpmn:intermediateCatchEvent id="IntermediateThrowEvent_0egi58r" name="Payment OK" parallelMultiple="false">
+            
+      <bpmn:incoming>SequenceFlow_0tsrxwg</bpmn:incoming>
+            
+      <bpmn:outgoing>SequenceFlow_1b5scqy</bpmn:outgoing>
+            
+      <bpmn:messageEventDefinition/>
+          
+    </bpmn:intermediateCatchEvent>
+        
+    <bpmn:serviceTask completionQuantity="1" custom:method="GET" custom:url="http://localhost:8082/releaseproducts" id="Task_0yn2b3z" implementation="##WebService" isForCompensation="false" name="releaseProducts" startQuantity="1">
+            
+      <bpmn:extensionElements>
+                
+        <camunda:field name="url" stringValue="http://localhost:8082/releaseproducts"/>
+                
+        <camunda:field name="method" stringValue="GET"/>
+              
+      </bpmn:extensionElements>
+            
+      <bpmn:incoming>SequenceFlow_1pyj162</bpmn:incoming>
+            
+      <bpmn:outgoing>SequenceFlow_0uvl97t</bpmn:outgoing>
+          
+    </bpmn:serviceTask>
+        
+    <bpmn:intermediateCatchEvent id="IntermediateThrowEvent_19t8t3k" name="Payment Failed" parallelMultiple="false">
+            
+      <bpmn:incoming>SequenceFlow_1hnjfv1</bpmn:incoming>
+            
+      <bpmn:outgoing>SequenceFlow_1pyj162</bpmn:outgoing>
+            
+      <bpmn:messageEventDefinition/>
+          
+    </bpmn:intermediateCatchEvent>
+        
+    <bpmn:serviceTask completionQuantity="1" custom:method="GET" custom:url="http://localhost:8082/updateStock" id="Task_1ybeur7" implementation="##WebService" isForCompensation="false" name="updateStock" startQuantity="1">
+            
+      <bpmn:extensionElements>
+                
+        <camunda:field name="url" stringValue="http://localhost:8082/updateStock"/>
+                
+        <camunda:field name="method" stringValue="GET"/>
+              
+      </bpmn:extensionElements>
+            
+      <bpmn:incoming>SequenceFlow_1b5scqy</bpmn:incoming>
+            
+      <bpmn:outgoing>SequenceFlow_152419b</bpmn:outgoing>
+          
+    </bpmn:serviceTask>
+        
+    <bpmn:parallelGateway gatewayDirection="Unspecified" id="ExclusiveGateway_1uiyby4">
+            
+      <bpmn:incoming>SequenceFlow_0bjtrff</bpmn:incoming>
+            
+      <bpmn:outgoing>SequenceFlow_0tsrxwg</bpmn:outgoing>
+            
+      <bpmn:outgoing>SequenceFlow_1hnjfv1</bpmn:outgoing>
+          
+    </bpmn:parallelGateway>
+        
+    <bpmn:sequenceFlow id="SequenceFlow_0jpm79n" sourceRef="Task_0sfhu0v" targetRef="IntermediateThrowEvent_0xnxekh"/>
+        
+    <bpmn:sequenceFlow id="SequenceFlow_0bjtrff" sourceRef="IntermediateThrowEvent_0xnxekh" targetRef="ExclusiveGateway_1uiyby4"/>
+        
+    <bpmn:sequenceFlow id="SequenceFlow_0uvl97t" sourceRef="Task_0yn2b3z" targetRef="EndEvent_0wz9knv"/>
+        
+    <bpmn:sequenceFlow id="SequenceFlow_152419b" sourceRef="Task_1ybeur7" targetRef="EndEvent_055p86a"/>
+        
+    <bpmn:sequenceFlow id="SequenceFlow_0tsrxwg" sourceRef="ExclusiveGateway_1uiyby4" targetRef="IntermediateThrowEvent_0egi58r"/>
+        
+    <bpmn:sequenceFlow id="SequenceFlow_1b5scqy" sourceRef="IntermediateThrowEvent_0egi58r" targetRef="Task_1ybeur7"/>
+        
+    <bpmn:sequenceFlow id="SequenceFlow_1pyj162" sourceRef="IntermediateThrowEvent_19t8t3k" targetRef="Task_0yn2b3z"/>
+        
+    <bpmn:sequenceFlow id="SequenceFlow_1hnjfv1" sourceRef="ExclusiveGateway_1uiyby4" targetRef="IntermediateThrowEvent_19t8t3k"/>
+        
+    <bpmn:intermediateThrowEvent id="IntermediateThrowEvent_0xnxekh" name="Enough Stock">
+            
+      <bpmn:incoming>SequenceFlow_0jpm79n</bpmn:incoming>
+            
+      <bpmn:outgoing>SequenceFlow_0bjtrff</bpmn:outgoing>
+            
+      <bpmn:property id="Property_122w4r1" name="__targetRef_placeholder"/>
+            
+      <bpmn:dataInputAssociation id="DataInputAssociation_0im3d13">
+                
+        <bpmn:sourceRef>DataObjectReference_0syhjfc</bpmn:sourceRef>
+                
+        <bpmn:targetRef>Property_122w4r1</bpmn:targetRef>
+              
+      </bpmn:dataInputAssociation>
+            
+      <bpmn:messageEventDefinition/>
+          
+    </bpmn:intermediateThrowEvent>
+        
+    <bpmn:boundaryEvent attachedToRef="ServiceTask_0l7xx9r" cancelActivity="true" id="IntermediateThrowEvent_05lkfcb" parallelMultiple="false">
+            
+      <bpmn:outgoing>SequenceFlow_07a7j1z</bpmn:outgoing>
+            
+      <bpmn:errorEventDefinition id="ErrorEventDefinition_01t3m7e"/>
+          
+    </bpmn:boundaryEvent>
+        
+    <bpmn:serviceTask completionQuantity="1" custom:method="GET" custom:url="http://localhost:8082/cancelorder" id="Task_15zmvin" implementation="##WebService" isForCompensation="false" name="cancelOrder" startQuantity="1">
+            
+      <bpmn:extensionElements>
+                
+        <camunda:field name="url" stringValue="http://localhost:8082/cancelorder"/>
+                
+        <camunda:field name="method" stringValue="GET"/>
+              
+      </bpmn:extensionElements>
+            
+      <bpmn:incoming>SequenceFlow_07a7j1z</bpmn:incoming>
+            
+      <bpmn:outgoing>SequenceFlow_05lptsr</bpmn:outgoing>
+          
+    </bpmn:serviceTask>
+        
+    <bpmn:serviceTask completionQuantity="1" custom:method="GET" custom:url="http://localhost:8082/informcustomer" id="Task_0wcbuzx" implementation="##WebService" isForCompensation="false" name="informCustomer" startQuantity="1">
+            
+      <bpmn:extensionElements>
+                
+        <camunda:field name="url" stringValue="http://localhost:8082/informcustomer"/>
+                
+        <camunda:field name="method" stringValue="GET"/>
+              
+      </bpmn:extensionElements>
+            
+      <bpmn:incoming>SequenceFlow_05lptsr</bpmn:incoming>
+            
+      <bpmn:outgoing>SequenceFlow_0mqhd07</bpmn:outgoing>
+          
+    </bpmn:serviceTask>
+        
+    <bpmn:endEvent id="EndEvent_0ki3b03">
+            
+      <bpmn:incoming>SequenceFlow_0mqhd07</bpmn:incoming>
+          
+    </bpmn:endEvent>
+        
+    <bpmn:dataObjectReference dataObjectRef="DataObject_1nkx4em" id="DataObjectReference_0syhjfc">
+            
+      <bpmn:extensionElements>
+                
+        <camunda:properties>
+                    
+          <camunda:property name="Payment Method" value="Integer"/>
+                  
+        </camunda:properties>
+              
+      </bpmn:extensionElements>
+          
+    </bpmn:dataObjectReference>
+        
+    <bpmn:dataObject id="DataObject_1nkx4em" isCollection="false"/>
+      
+  </bpmn:process>
+    
+  <bpmn:process id="Process_07h4c74" isClosed="false" isExecutable="false" processType="None">
+        
+    <bpmn:serviceTask completionQuantity="1" custom:method="GET" custom:url="http://localhost:8085/createshipment" id="Task_0oyvnna" implementation="##WebService" isForCompensation="false" name="createShipment" startQuantity="1">
+            
+      <bpmn:extensionElements>
+                
+        <camunda:field name="url" stringValue="http://localhost:8085/createshipment"/>
+                
+        <camunda:field name="method" stringValue="GET"/>
+              
+      </bpmn:extensionElements>
+            
+      <bpmn:incoming>SequenceFlow_01mx3wo</bpmn:incoming>
+            
+      <bpmn:outgoing>SequenceFlow_0b1hwvl</bpmn:outgoing>
+          
+    </bpmn:serviceTask>
+        
+    <bpmn:serviceTask completionQuantity="1" custom:method="GET" custom:url="http://localhost:8085/assigndriver" id="Task_0uqsdy3" implementation="##WebService" isForCompensation="false" name="assignDriver" startQuantity="1">
+            
+      <bpmn:extensionElements>
+                
+        <camunda:field name="url" stringValue="http://localhost:8085/assigndriver"/>
+                
+        <camunda:field name="method" stringValue="GET"/>
+              
+      </bpmn:extensionElements>
+            
+      <bpmn:incoming>SequenceFlow_0b1hwvl</bpmn:incoming>
+            
+      <bpmn:outgoing>SequenceFlow_1bfjcu2</bpmn:outgoing>
+          
+    </bpmn:serviceTask>
+        
+    <bpmn:startEvent id="StartEvent_1o0gd5i" isInterrupting="true" name="Stock Updated" parallelMultiple="false">
+            
+      <bpmn:outgoing>SequenceFlow_01mx3wo</bpmn:outgoing>
+            
+      <bpmn:messageEventDefinition/>
+          
+    </bpmn:startEvent>
+        
+    <bpmn:endEvent id="EndEvent_1khd82k" name="Shipment Managed">
+            
+      <bpmn:incoming>SequenceFlow_1bfjcu2</bpmn:incoming>
+            
+      <bpmn:messageEventDefinition/>
+          
+    </bpmn:endEvent>
+        
+    <bpmn:sequenceFlow id="SequenceFlow_01mx3wo" sourceRef="StartEvent_1o0gd5i" targetRef="Task_0oyvnna"/>
+        
+    <bpmn:sequenceFlow id="SequenceFlow_0b1hwvl" sourceRef="Task_0oyvnna" targetRef="Task_0uqsdy3"/>
+        
+    <bpmn:sequenceFlow id="SequenceFlow_1bfjcu2" sourceRef="Task_0uqsdy3" targetRef="EndEvent_1khd82k"/>
+      
+  </bpmn:process>
+    
+  <bpmndi:BPMNDiagram id="BPMNDiagram_1">
+        
+    <bpmndi:BPMNPlane bpmnElement="Collaboration_1hvxavi" id="BPMNPlane_1">
+            
+      <bpmndi:BPMNShape bpmnElement="Participant_1x54jsq" id="Participant_1x54jsq_di" isHorizontal="true">
+                
+        <dc:Bounds height="240" width="1970" x="160" y="80"/>
+              
+      </bpmndi:BPMNShape>
+            
+      <bpmndi:BPMNShape bpmnElement="ServiceTask_0626o4t" id="ServiceTask_0626o4t_di">
+                
+        <dc:Bounds height="80" width="100" x="305" y="100"/>
+              
+      </bpmndi:BPMNShape>
+            
+      <bpmndi:BPMNShape bpmnElement="EndEvent_0lnu2h6" id="EndEvent_0lnu2h6_di">
+                
+        <dc:Bounds height="36" width="36" x="702" y="242"/>
+              
+      </bpmndi:BPMNShape>
+            
+      <bpmndi:BPMNShape bpmnElement="Task_0vo5g53" id="ServiceTask_0q5me96_di">
+                
+        <dc:Bounds height="80" width="100" x="430" y="220"/>
+              
+      </bpmndi:BPMNShape>
+            
+      <bpmndi:BPMNShape bpmnElement="Task_0zc6mlc" id="ServiceTask_1xhgz9p_di">
+                
+        <dc:Bounds height="80" width="100" x="1810" y="100"/>
+              
+      </bpmndi:BPMNShape>
+            
+      <bpmndi:BPMNShape bpmnElement="IntermediateThrowEvent_08qzkak" id="IntermediateCatchEvent_17yffv6_di">
+                
+        <dc:Bounds height="36" width="36" x="1731" y="122"/>
+                
+        <bpmndi:BPMNLabel>
+                    
+          <dc:Bounds height="27" width="47" x="1726" y="92"/>
+                  
+        </bpmndi:BPMNLabel>
+              
+      </bpmndi:BPMNShape>
+            
+      <bpmndi:BPMNShape bpmnElement="EndEvent_1ofpjgn" id="EndEvent_154fbw8_di">
+                
+        <dc:Bounds height="36" width="36" x="2062" y="122"/>
+                
+        <bpmndi:BPMNLabel>
+                    
+          <dc:Bounds height="27" width="52" x="2054" y="165"/>
+                  
+        </bpmndi:BPMNLabel>
+              
+      </bpmndi:BPMNShape>
+            
+      <bpmndi:BPMNShape bpmnElement="Task_0dwg5by" id="ServiceTask_18l4ami_di">
+                
+        <dc:Bounds height="80" width="100" x="560" y="100"/>
+              
+      </bpmndi:BPMNShape>
+            
+      <bpmndi:BPMNShape bpmnElement="StartEvent_1nu2tlq" id="StartEvent_12asqf5_di">
+                
+        <dc:Bounds height="36" width="36" x="222" y="122"/>
+                
+        <bpmndi:BPMNLabel>
+                    
+          <dc:Bounds height="27" width="90" x="199" y="160"/>
+                  
+        </bpmndi:BPMNLabel>
+              
+      </bpmndi:BPMNShape>
+            
+      <bpmndi:BPMNShape bpmnElement="Task_1p8h9rz" id="ServiceTask_0jx3knp_di">
+                
+        <dc:Bounds height="80" width="100" x="560" y="220"/>
+              
+      </bpmndi:BPMNShape>
+            
+      <bpmndi:BPMNShape bpmnElement="Task_10i9990" id="ServiceTask_1n5447y_di">
+                
+        <dc:Bounds height="80" width="100" x="1939" y="100"/>
+              
+      </bpmndi:BPMNShape>
+            
+      <bpmndi:BPMNShape bpmnElement="IntermediateThrowEvent_06f6r4x" id="IntermediateThrowEvent_08cv8ky_di">
+                
+        <dc:Bounds height="36" width="36" x="752" y="122"/>
+                
+        <bpmndi:BPMNLabel>
+                    
+          <dc:Bounds height="27" width="48" x="746" y="84.5"/>
+                  
+        </bpmndi:BPMNLabel>
+              
+      </bpmndi:BPMNShape>
+            
+      <bpmndi:BPMNShape bpmnElement="DataObjectReference_02l7u2z" id="DataObjectReference_02l7u2z_di">
+                
+        <dc:Bounds height="50" width="36" x="262" y="215"/>
+              
+      </bpmndi:BPMNShape>
+            
+      <bpmndi:BPMNShape bpmnElement="DataObjectReference_0w8gki0" id="DataObjectReference_0w8gki0_di">
+                
+        <dc:Bounds height="50" width="36" x="842" y="195"/>
+              
+      </bpmndi:BPMNShape>
+            
+      <bpmndi:BPMNShape bpmnElement="IntermediateThrowEvent_17y6grb" id="BoundaryEvent_1r1eicu_di">
+                
+        <dc:Bounds height="36" width="36" x="367" y="162"/>
+              
+      </bpmndi:BPMNShape>
+            
+      <bpmndi:BPMNEdge bpmnElement="SequenceFlow_0sn8zf6" id="SequenceFlow_0sn8zf6_di">
+                
+        <di:waypoint x="258" y="140"/>
+                
+        <di:waypoint x="305" y="140"/>
+              
+      </bpmndi:BPMNEdge>
+            
+      <bpmndi:BPMNEdge bpmnElement="SequenceFlow_13grrvt" id="SequenceFlow_13grrvt_di">
+                
+        <di:waypoint x="405" y="140"/>
+                
+        <di:waypoint x="560" y="140"/>
+              
+      </bpmndi:BPMNEdge>
+            
+      <bpmndi:BPMNEdge bpmnElement="SequenceFlow_0qparhr" id="SequenceFlow_0qparhr_di">
+                
+        <di:waypoint x="530" y="260"/>
+                
+        <di:waypoint x="560" y="260"/>
+              
+      </bpmndi:BPMNEdge>
+            
+      <bpmndi:BPMNEdge bpmnElement="SequenceFlow_09avmiw" id="SequenceFlow_09avmiw_di">
+                
+        <di:waypoint x="660" y="260"/>
+                
+        <di:waypoint x="702" y="260"/>
+              
+      </bpmndi:BPMNEdge>
+            
+      <bpmndi:BPMNEdge bpmnElement="SequenceFlow_15jk787" id="SequenceFlow_15jk787_di">
+                
+        <di:waypoint x="385" y="198"/>
+                
+        <di:waypoint x="385" y="260"/>
+                
+        <di:waypoint x="430" y="260"/>
+              
+      </bpmndi:BPMNEdge>
+            
+      <bpmndi:BPMNEdge bpmnElement="SequenceFlow_19gw26p" id="SequenceFlow_19gw26p_di">
+                
+        <di:waypoint x="1767" y="140"/>
+                
+        <di:waypoint x="1810" y="140"/>
+              
+      </bpmndi:BPMNEdge>
+            
+      <bpmndi:BPMNEdge bpmnElement="SequenceFlow_1h3fghq" id="SequenceFlow_1h3fghq_di">
+                
+        <di:waypoint x="1910" y="140"/>
+                
+        <di:waypoint x="1939" y="140"/>
+              
+      </bpmndi:BPMNEdge>
+            
+      <bpmndi:BPMNEdge bpmnElement="SequenceFlow_0503zl7" id="SequenceFlow_0503zl7_di">
+                
+        <di:waypoint x="2039" y="140"/>
+                
+        <di:waypoint x="2062" y="140"/>
+              
+      </bpmndi:BPMNEdge>
+            
+      <bpmndi:BPMNEdge bpmnElement="SequenceFlow_1pl0nj7" id="SequenceFlow_1pl0nj7_di">
+                
+        <di:waypoint x="660" y="140"/>
+                
+        <di:waypoint x="752" y="140"/>
+              
+      </bpmndi:BPMNEdge>
+            
+      <bpmndi:BPMNEdge bpmnElement="SequenceFlow_1a0x9h4" id="SequenceFlow_1a0x9h4_di">
+                
+        <di:waypoint x="788" y="140"/>
+                
+        <di:waypoint x="1731" y="140"/>
+              
+      </bpmndi:BPMNEdge>
+            
+      <bpmndi:BPMNShape bpmnElement="Participant_1vqa33e" id="Participant_1vqa33e_di" isHorizontal="true">
+                
+        <dc:Bounds height="280" width="1970" x="160" y="700"/>
+              
+      </bpmndi:BPMNShape>
+            
+      <bpmndi:BPMNShape bpmnElement="ServiceTask_04aarjs" id="ServiceTask_04aarjs_di">
+                
+        <dc:Bounds height="80" width="100" x="890" y="860"/>
+              
+      </bpmndi:BPMNShape>
+            
+      <bpmndi:BPMNShape bpmnElement="ServiceTask_1l3sk3a" id="ServiceTask_1l3sk3a_di">
+                
+        <dc:Bounds height="80" width="100" x="1040" y="720"/>
+              
+      </bpmndi:BPMNShape>
+            
+      <bpmndi:BPMNShape bpmnElement="StartEvent_0ofkwm5" id="StartEvent_0zqiuwb_di">
+                
+        <dc:Bounds height="36" width="36" x="792" y="742"/>
+                
+        <bpmndi:BPMNLabel>
+                    
+          <dc:Bounds height="14" width="69" x="776" y="785"/>
+                  
+        </bpmndi:BPMNLabel>
+              
+      </bpmndi:BPMNShape>
+            
+      <bpmndi:BPMNShape bpmnElement="EndEvent_0uxtgne" id="EndEvent_07lfbc6_di">
+                
+        <dc:Bounds height="36" width="36" x="1192" y="742"/>
+                
+        <bpmndi:BPMNLabel>
+                    
+          <dc:Bounds height="14" width="63" x="1179" y="785"/>
+                  
+        </bpmndi:BPMNLabel>
+              
+      </bpmndi:BPMNShape>
+            
+      <bpmndi:BPMNShape bpmnElement="Task_07r9m43" id="ServiceTask_0p7tkfj_di">
+                
+        <dc:Bounds height="80" width="100" x="1150" y="860"/>
+              
+      </bpmndi:BPMNShape>
+            
+      <bpmndi:BPMNShape bpmnElement="EndEvent_0xcpu6g" id="EndEvent_1vedwin_di">
+                
+        <dc:Bounds height="36" width="36" x="1402" y="882"/>
+                
+        <bpmndi:BPMNLabel>
+                    
+          <dc:Bounds height="14" width="77" x="1382" y="925"/>
+                  
+        </bpmndi:BPMNLabel>
+              
+      </bpmndi:BPMNShape>
+            
+      <bpmndi:BPMNShape bpmnElement="Task_0e2o1cj" id="ServiceTask_17gmk07_di">
+                
+        <dc:Bounds height="80" width="100" x="890" y="720"/>
+              
+      </bpmndi:BPMNShape>
+            
+      <bpmndi:BPMNShape bpmnElement="Task_1v7zv47" id="ServiceTask_0ybc9f3_di">
+                
+        <dc:Bounds height="80" width="100" x="1280" y="860"/>
+              
+      </bpmndi:BPMNShape>
+            
+      
+      <bpmndi:BPMNShape bpmnElement="IntermediateThrowEvent_1uxrkv6" id="BoundaryEvent_0t2vzn2_di">
+                
+        <dc:Bounds height="36" width="36" x="1102" y="782"/>
+              
+      </bpmndi:BPMNShape>
+            
+      <bpmndi:BPMNShape bpmnElement="BoundaryEvent_04hffgp" id="BoundaryEvent_0m6a6cj_di">
+                
+        <dc:Bounds height="36" width="36" x="952" y="782"/>
+              
+      </bpmndi:BPMNShape>
+            
+      <bpmndi:BPMNEdge bpmnElement="SequenceFlow_0gzq95p" id="SequenceFlow_0gzq95p_di">
+                
+        <di:waypoint x="1140" y="760"/>
+                
+        <di:waypoint x="1192" y="760"/>
+              
+      </bpmndi:BPMNEdge>
+            
+      <bpmndi:BPMNEdge bpmnElement="SequenceFlow_1gl67fk" id="SequenceFlow_1gl67fk_di">
+                
+        <di:waypoint x="1120" y="818"/>
+                
+        <di:waypoint x="1120" y="900"/>
+                
+        <di:waypoint x="1150" y="900"/>
+              
+      </bpmndi:BPMNEdge>
+            
+      <bpmndi:BPMNEdge bpmnElement="SequenceFlow_1f6cwiv" id="SequenceFlow_1f6cwiv_di">
+                
+        <di:waypoint x="990" y="760"/>
+                
+        <di:waypoint x="1040" y="760"/>
+              
+      </bpmndi:BPMNEdge>
+            
+      <bpmndi:BPMNEdge bpmnElement="SequenceFlow_1d70tjq" id="SequenceFlow_1d70tjq_di">
+                
+        <di:waypoint x="970" y="818"/>
+                
+        <di:waypoint x="970" y="900"/>
+                
+        <di:waypoint x="970" y="860"/>
+              
+      </bpmndi:BPMNEdge>
+            
+      <bpmndi:BPMNEdge bpmnElement="SequenceFlow_0rgnozq" id="SequenceFlow_0rgnozq_di">
+                
+        <di:waypoint x="920" y="860"/>
+                
+        <di:waypoint x="920" y="800"/>
+              
+      </bpmndi:BPMNEdge>
+            
+      <bpmndi:BPMNEdge bpmnElement="SequenceFlow_070m5hg" id="SequenceFlow_070m5hg_di">
+                
+        <di:waypoint x="828" y="760"/>
+                
+        <di:waypoint x="890" y="760"/>
+              
+      </bpmndi:BPMNEdge>
+            
+      <bpmndi:BPMNEdge bpmnElement="SequenceFlow_19fpf7b" id="SequenceFlow_19fpf7b_di">
+                
+        <di:waypoint x="1250" y="900"/>
+                
+        <di:waypoint x="1280" y="900"/>
+              
+      </bpmndi:BPMNEdge>
+            
+      <bpmndi:BPMNEdge bpmnElement="SequenceFlow_0zmoylf" id="SequenceFlow_0zmoylf_di">
+                
+        <di:waypoint x="1380" y="900"/>
+                
+        <di:waypoint x="1402" y="900"/>
+              
+      </bpmndi:BPMNEdge>
+            
+      <bpmndi:BPMNShape bpmnElement="Participant_1aa95by" id="Participant_1aa95by_di" isHorizontal="true">
+                
+        <dc:Bounds height="340" width="1970" x="160" y="340"/>
+                
+        <bpmndi:BPMNLabel/>
+              
+      </bpmndi:BPMNShape>
+            
+      <bpmndi:BPMNShape bpmnElement="ServiceTask_0l7xx9r" id="ServiceTask_0l7xx9r_di">
+                
+        <dc:Bounds height="80" width="100" x="830" y="370"/>
+              
+      </bpmndi:BPMNShape>
+            
+      <bpmndi:BPMNShape bpmnElement="StartEvent_117vzcr" id="StartEvent_0zx7do9_di">
+                
+        <dc:Bounds height="36" width="36" x="752" y="392"/>
+                
+        <bpmndi:BPMNLabel>
+                    
+          <dc:Bounds height="27" width="48" x="746" y="435"/>
+                  
+        </bpmndi:BPMNLabel>
+              
+      </bpmndi:BPMNShape>
+            
+      <bpmndi:BPMNShape bpmnElement="Task_0sfhu0v" id="ServiceTask_00pbzr4_di">
+                
+        <dc:Bounds height="80" width="100" x="890" y="530"/>
+              
+      </bpmndi:BPMNShape>
+            
+      <bpmndi:BPMNShape bpmnElement="EndEvent_0wz9knv" id="EndEvent_0wz9knv_di">
+                
+        <dc:Bounds height="36" width="36" x="1662" y="602"/>
+              
+      </bpmndi:BPMNShape>
+            
+      <bpmndi:BPMNShape bpmnElement="EndEvent_055p86a" id="EndEvent_038ebwk_di">
+                
+        <dc:Bounds height="36" width="36" x="1602" y="492"/>
+                
+        <bpmndi:BPMNLabel>
+                    
+          <dc:Bounds height="14" width="73" x="1584" y="479"/>
+                  
+        </bpmndi:BPMNLabel>
+              
+      </bpmndi:BPMNShape>
+            
+      <bpmndi:BPMNShape bpmnElement="IntermediateThrowEvent_0egi58r" id="IntermediateCatchEvent_0rn2zfx_di">
+                
+        <dc:Bounds height="36" width="36" x="1192" y="492"/>
+                
+        <bpmndi:BPMNLabel>
+                    
+          <dc:Bounds height="14" width="63" x="1179" y="479"/>
+                  
+        </bpmndi:BPMNLabel>
+              
+      </bpmndi:BPMNShape>
+            
+      <bpmndi:BPMNShape bpmnElement="Task_0yn2b3z" id="ServiceTask_1rci9u1_di">
+                
+        <dc:Bounds height="80" width="100" x="1490" y="580"/>
+              
+      </bpmndi:BPMNShape>
+            
+      <bpmndi:BPMNShape bpmnElement="IntermediateThrowEvent_19t8t3k" id="IntermediateCatchEvent_1v44pmz_di">
+                
+        <dc:Bounds height="36" width="36" x="1402" y="602"/>
+                
+        <bpmndi:BPMNLabel>
+                    
+          <dc:Bounds height="14" width="77" x="1377" y="588"/>
+                  
+        </bpmndi:BPMNLabel>
+              
+      </bpmndi:BPMNShape>
+            
+      <bpmndi:BPMNShape bpmnElement="Task_1ybeur7" id="ServiceTask_0hns9au_di">
+                
+        <dc:Bounds height="80" width="100" x="1350" y="470"/>
+              
+      </bpmndi:BPMNShape>
+            
+      <bpmndi:BPMNShape bpmnElement="ExclusiveGateway_1uiyby4" id="ParallelGateway_112a8xh_di">
+                
+        <dc:Bounds height="50" width="50" x="1086" y="545"/>
+              
+      </bpmndi:BPMNShape>
+            
+      <bpmndi:BPMNShape bpmnElement="IntermediateThrowEvent_0xnxekh" id="IntermediateThrowEvent_0mvt4gj_di">
+                
+        <dc:Bounds height="36" width="36" x="1022" y="552"/>
+                
+        <bpmndi:BPMNLabel>
+                    
+          <dc:Bounds height="14" width="69" x="1005" y="528"/>
+                  
+        </bpmndi:BPMNLabel>
+              
+      </bpmndi:BPMNShape>
+            
+      <bpmndi:BPMNShape bpmnElement="Task_15zmvin" id="ServiceTask_08peifp_di">
+                
+        <dc:Bounds height="80" width="100" x="990" y="390"/>
+              
+      </bpmndi:BPMNShape>
+            
+      <bpmndi:BPMNShape bpmnElement="Task_0wcbuzx" id="ServiceTask_05yj5dn_di">
+                
+        <dc:Bounds height="80" width="100" x="1130" y="390"/>
+              
+      </bpmndi:BPMNShape>
+            
+      <bpmndi:BPMNShape bpmnElement="EndEvent_0ki3b03" id="EndEvent_0ki3b03_di">
+                
+        <dc:Bounds height="36" width="36" x="1262" y="412"/>
+              
+      </bpmndi:BPMNShape>
+            
+      <bpmndi:BPMNShape bpmnElement="DataObjectReference_0syhjfc" id="DataObjectReference_0syhjfc_di">
+                
+        <dc:Bounds height="50" width="36" x="732" y="595"/>
+              
+      </bpmndi:BPMNShape>
+            
+      <bpmndi:BPMNShape bpmnElement="IntermediateThrowEvent_05lkfcb" id="BoundaryEvent_1agdbcf_di">
+                
+        <dc:Bounds height="36" width="36" x="912" y="412"/>
+              
+      </bpmndi:BPMNShape>
+            
+      <bpmndi:BPMNEdge bpmnElement="SequenceFlow_1n1uzq4" id="SequenceFlow_1n1uzq4_di">
+                
+        <di:waypoint x="788" y="410"/>
+                
+        <di:waypoint x="830" y="410"/>
+              
+      </bpmndi:BPMNEdge>
+            
+      <bpmndi:BPMNEdge bpmnElement="SequenceFlow_05lptsr" id="SequenceFlow_05lptsr_di">
+                
+        <di:waypoint x="1090" y="430"/>
+                
+        <di:waypoint x="1130" y="430"/>
+              
+      </bpmndi:BPMNEdge>
+            
+      <bpmndi:BPMNEdge bpmnElement="SequenceFlow_0mqhd07" id="SequenceFlow_0mqhd07_di">
+                
+        <di:waypoint x="1230" y="430"/>
+                
+        <di:waypoint x="1262" y="430"/>
+              
+      </bpmndi:BPMNEdge>
+            
+      <bpmndi:BPMNEdge bpmnElement="SequenceFlow_07a7j1z" id="SequenceFlow_07a7j1z_di">
+                
+        <di:waypoint x="948" y="430"/>
+                
+        <di:waypoint x="990" y="430"/>
+              
+      </bpmndi:BPMNEdge>
+            
+      <bpmndi:BPMNEdge bpmnElement="SequenceFlow_1st8mja" id="SequenceFlow_1st8mja_di">
+                
+        <di:waypoint x="860" y="450"/>
+                
+        <di:waypoint x="860" y="570"/>
+                
+        <di:waypoint x="890" y="570"/>
+              
+      </bpmndi:BPMNEdge>
+            
+      <bpmndi:BPMNEdge bpmnElement="SequenceFlow_0jpm79n" id="SequenceFlow_0jpm79n_di">
+                
+        <di:waypoint x="990" y="570"/>
+                
+        <di:waypoint x="1022" y="570"/>
+              
+      </bpmndi:BPMNEdge>
+            
+      <bpmndi:BPMNEdge bpmnElement="SequenceFlow_0bjtrff" id="SequenceFlow_0bjtrff_di">
+                
+        <di:waypoint x="1058" y="570"/>
+                
+        <di:waypoint x="1086" y="570"/>
+              
+      </bpmndi:BPMNEdge>
+            
+      <bpmndi:BPMNEdge bpmnElement="SequenceFlow_0uvl97t" id="SequenceFlow_0uvl97t_di">
+                
+        <di:waypoint x="1590" y="620"/>
+                
+        <di:waypoint x="1662" y="620"/>
+              
+      </bpmndi:BPMNEdge>
+            
+      <bpmndi:BPMNEdge bpmnElement="SequenceFlow_152419b" id="SequenceFlow_152419b_di">
+                
+        <di:waypoint x="1450" y="510"/>
+                
+        <di:waypoint x="1602" y="510"/>
+              
+      </bpmndi:BPMNEdge>
+            
+      <bpmndi:BPMNEdge bpmnElement="SequenceFlow_0tsrxwg" id="SequenceFlow_0tsrxwg_di">
+                
+        <di:waypoint x="1111" y="545"/>
+                
+        <di:waypoint x="1111" y="510"/>
+                
+        <di:waypoint x="1192" y="510"/>
+              
+      </bpmndi:BPMNEdge>
+            
+      <bpmndi:BPMNEdge bpmnElement="SequenceFlow_1b5scqy" id="SequenceFlow_1b5scqy_di">
+                
+        <di:waypoint x="1228" y="510"/>
+                
+        <di:waypoint x="1350" y="510"/>
+              
+      </bpmndi:BPMNEdge>
+            
+      <bpmndi:BPMNEdge bpmnElement="SequenceFlow_1pyj162" id="SequenceFlow_1pyj162_di">
+                
+        <di:waypoint x="1438" y="620"/>
+                
+        <di:waypoint x="1490" y="620"/>
+              
+      </bpmndi:BPMNEdge>
+            
+      <bpmndi:BPMNEdge bpmnElement="SequenceFlow_1hnjfv1" id="SequenceFlow_1hnjfv1_di">
+                
+        <di:waypoint x="1111" y="595"/>
+                
+        <di:waypoint x="1111" y="620"/>
+                
+        <di:waypoint x="1402" y="620"/>
+              
+      </bpmndi:BPMNEdge>
+            
+      <bpmndi:BPMNShape bpmnElement="Participant_1vq6aox" id="Participant_1vq6aox_di" isHorizontal="true">
+                
+        <dc:Bounds height="140" width="1970" x="160" y="1000"/>
+              
+      </bpmndi:BPMNShape>
+            
+      <bpmndi:BPMNShape bpmnElement="Task_0oyvnna" id="ServiceTask_0jc2cdy_di">
+                
+        <dc:Bounds height="80" width="100" x="1680" y="1040"/>
+              
+      </bpmndi:BPMNShape>
+            
+      <bpmndi:BPMNShape bpmnElement="Task_0uqsdy3" id="ServiceTask_0zsnf4q_di">
+                
+        <dc:Bounds height="80" width="100" x="1820" y="1040"/>
+              
+      </bpmndi:BPMNShape>
+            
+      <bpmndi:BPMNShape bpmnElement="StartEvent_1o0gd5i" id="StartEvent_07vj4mr_di">
+                
+        <dc:Bounds height="36" width="36" x="1602" y="1062"/>
+                
+        <bpmndi:BPMNLabel>
+                    
+          <dc:Bounds height="14" width="73" x="1584" y="1105"/>
+                  
+        </bpmndi:BPMNLabel>
+              
+      </bpmndi:BPMNShape>
+            
+      <bpmndi:BPMNShape bpmnElement="EndEvent_1khd82k" id="EndEvent_1x3pfa5_di">
+                
+        <dc:Bounds height="36" width="36" x="1952" y="1062"/>
+                
+        <bpmndi:BPMNLabel>
+                    
+          <dc:Bounds height="27" width="47" x="1947" y="1105"/>
+                  
+        </bpmndi:BPMNLabel>
+              
+      </bpmndi:BPMNShape>
+            
+      <bpmndi:BPMNEdge bpmnElement="SequenceFlow_01mx3wo" id="SequenceFlow_01mx3wo_di">
+                
+        <di:waypoint x="1638" y="1080"/>
+                
+        <di:waypoint x="1680" y="1080"/>
+              
+      </bpmndi:BPMNEdge>
+            
+      <bpmndi:BPMNEdge bpmnElement="SequenceFlow_0b1hwvl" id="SequenceFlow_0b1hwvl_di">
+                
+        <di:waypoint x="1780" y="1080"/>
+                
+        <di:waypoint x="1820" y="1080"/>
+              
+      </bpmndi:BPMNEdge>
+            
+      <bpmndi:BPMNEdge bpmnElement="SequenceFlow_1bfjcu2" id="SequenceFlow_1bfjcu2_di">
+                
+        <di:waypoint x="1920" y="1080"/>
+                
+        <di:waypoint x="1952" y="1080"/>
+              
+      </bpmndi:BPMNEdge>
+            
+      <bpmndi:BPMNEdge bpmnElement="MessageFlow_1ic6qdg" id="MessageFlow_1ic6qdg_di">
+                
+        <di:waypoint x="1040" y="588"/>
+                
+        <di:waypoint x="1040" y="640"/>
+                
+        <di:waypoint x="810" y="640"/>
+                
+        <di:waypoint x="810" y="742"/>
+                
+        <bpmndi:BPMNLabel>
+                    
+          <dc:Bounds height="14" width="68" x="1348" y="1212"/>
+                  
+        </bpmndi:BPMNLabel>
+              
+      </bpmndi:BPMNEdge>
+            
+      <bpmndi:BPMNEdge bpmnElement="MessageFlow_0bdi1qu" id="MessageFlow_0bdi1qu_di">
+                
+        <di:waypoint x="770.0" y="160.0"/>
+                
+        <di:waypoint x="770" y="392"/>
+                
+        <bpmndi:BPMNLabel>
+                    
+          <dc:Bounds height="27" width="48" x="1206" y="816"/>
+                  
+        </bpmndi:BPMNLabel>
+              
+      </bpmndi:BPMNEdge>
+            
+      <bpmndi:BPMNEdge bpmnElement="MessageFlow_1txuzjd" id="MessageFlow_1txuzjd_di">
+                
+        <di:waypoint x="1620" y="530"/>
+                
+        <di:waypoint x="1620" y="1062"/>
+                
+        <bpmndi:BPMNLabel>
+                    
+          <dc:Bounds height="14" width="73" x="2064" y="1083"/>
+                  
+        </bpmndi:BPMNLabel>
+              
+      </bpmndi:BPMNEdge>
+            
+      <bpmndi:BPMNEdge bpmnElement="MessageFlow_1uzx9w5" id="MessageFlow_1uzx9w5_di">
+                
+        <di:waypoint x="1970" y="1062"/>
+                
+        <di:waypoint x="1970" y="1020"/>
+                
+        <di:waypoint x="1749" y="1020"/>
+                
+        <di:waypoint x="1749" y="158"/>
+                
+        <bpmndi:BPMNLabel>
+                    
+          <dc:Bounds height="27" width="47" x="2417" y="1616"/>
+                  
+        </bpmndi:BPMNLabel>
+              
+      </bpmndi:BPMNEdge>
+            
+      <bpmndi:BPMNEdge bpmnElement="MessageFlow_0vber8c" id="MessageFlow_0vber8c_di">
+                
+        <di:waypoint x="1210" y="742"/>
+                
+        <di:waypoint x="1210" y="528"/>
+                
+        <bpmndi:BPMNLabel>
+                    
+          <dc:Bounds height="14" width="63" x="1829" y="1303"/>
+                  
+        </bpmndi:BPMNLabel>
+              
+      </bpmndi:BPMNEdge>
+            
+      <bpmndi:BPMNEdge bpmnElement="MessageFlow_1u8c1af" id="MessageFlow_1u8c1af_di">
+                
+        <di:waypoint x="1420" y="882"/>
+                
+        <di:waypoint x="1420" y="638"/>
+                
+        <bpmndi:BPMNLabel>
+                    
+          <dc:Bounds height="14" width="77" x="1803" y="1402"/>
+                  
+        </bpmndi:BPMNLabel>
+              
+      </bpmndi:BPMNEdge>
+            
+      <bpmndi:BPMNEdge bpmnElement="DataOutputAssociation_0dpxiaw" id="DataOutputAssociation_0dpxiaw_di">
+                
+        <di:waypoint x="247" y="157"/>
+                
+        <di:waypoint x="270" y="215"/>
+              
+      </bpmndi:BPMNEdge>
+            
+      <bpmndi:BPMNEdge bpmnElement="DataInputAssociation_0pekmcs" id="DataInputAssociation_0pekmcs_di">
+                
+        <di:waypoint x="842" y="204"/>
+                
+        <di:waypoint x="783" y="152"/>
+              
+      </bpmndi:BPMNEdge>
+            
+      <bpmndi:BPMNEdge bpmnElement="DataOutputAssociation_1o34wkp" id="DataOutputAssociation_1o34wkp_di">
+                
+        <di:waypoint x="778" y="394"/>
+                
+        <di:waypoint x="852" y="245"/>
+              
+      </bpmndi:BPMNEdge>
+            
+      <bpmndi:BPMNEdge bpmnElement="DataInputAssociation_0im3d13" id="DataInputAssociation_0im3d13_di">
+                
+        <di:waypoint x="768" y="617"/>
+                
+        <di:waypoint x="1022" y="573"/>
+              
+      </bpmndi:BPMNEdge>
+            
+      <bpmndi:BPMNEdge bpmnElement="DataOutputAssociation_020m3dq" id="DataOutputAssociation_020m3dq_di">
+                
+        <di:waypoint x="793" y="763"/>
+                
+        <di:waypoint x="852.0" y="245.0"/>
+              
+      </bpmndi:BPMNEdge>
+          
+    </bpmndi:BPMNPlane>
+      
+  </bpmndi:BPMNDiagram>
+  
+</bpmn:definitions>

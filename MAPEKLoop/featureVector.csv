@@ -1,0 +1,2 @@
+﻿Modified Element,Change action,Does the change introduce new events?,Has the event attached data?,Type of update,Is a throwing event affected?,Is a catch event affected?,Is the previous event send by the affected microservice? 
+1,1,1,1,1,0,1,1

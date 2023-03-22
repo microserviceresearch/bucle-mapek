@@ -1,0 +1,9 @@
+/.gradle/
+/bin/
+/build/
+/fragments/
+**/.DS_Store
+.gradle
+gradle
+gradlew.bat
+gradlew

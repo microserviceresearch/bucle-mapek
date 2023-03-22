@@ -1,0 +1,22 @@
+spring:
+  application:
+    name: Shipment
+    
+server:
+  port: 8081
+  ip: 172.23.180.112
+  
+composition:
+  messagebroker:
+    type: rabbitmq
+    host: 172.23.180.72
+    port: 5672
+    user: microservice
+    password: microservice
+  fragmentmanager:
+    url: http://172.23.186.140:8083
+    
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://172.23.186.140:2222/eureka
